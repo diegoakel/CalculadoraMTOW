@@ -26,15 +26,16 @@ class asa():
         self.mac = ( cordas[0]*(2/3)* ((1+self.afil+self.afil**2)/(1+self.afil)))
 
         self.alfa_stol = alfa_stol
+
         # Constantes
         self.g = 9.81
         self.rho = 1.225
         self.mi = 0.025
         self.pista_total = 60
 
-    def file_and_commands(self): # Não mexer nisso
+    def file_and_commands(self):
         o  = open("asa.avl", "w")
-        o.write(" Urutau 2019 (2)\n" +
+        o.write(" Asa\n" +
         "0.0                                 | Mach\n" +
         "0     0     0.0                     | iYsym  iZsym  Zsym\n"+
         "%f     %f     %f   | Sref   Cref   Bref\n" %(self.S, self.mac, self.B)+
@@ -97,21 +98,18 @@ class asa():
         
         CD = coefficients[-6]
         CL = coefficients[-7]
-        # CD_CL = [CD, CL]
 
         self.CD = CD
         self.CL = CL
 
-        # Limpar
+        # Limpar Arquivos
         dirList = os.listdir()
         arquivo = ""
         for file in dirList:
             if (file == "asa.avl") or (file == "resultado.txt") or  (file == "comandos.txt"):
                 arquivo = file
                 os.remove(arquivo)
-        
-        # return (CD_CL)
-    
+            
     def lift (self, V, rho = 1.225 ):
         return (self.rho*V**(2)*0.5*self.CL*self.S)
     
@@ -142,6 +140,11 @@ asa1 = asa(envs,cordas, offsets)
 # Obtendo valores
 asa1.coeficientes()
 
+lift = asa1.lift(12)
+
+drag = asa1.drag(12)
+
 mtow = asa1.mtow()
+
 
 print (mtow)
